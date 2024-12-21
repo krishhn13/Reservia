@@ -1,10 +1,13 @@
-![Reservia](./Reservia/Home%20Page/images/Reservia.gif)
 
 # 🍽️ **Welcome to Reservia** 🎉
 
 **Your Ultimate Restaurant Booking Experience!** 🍴
 
 Welcome to **Reservia**, where dining meets convenience! Whether you're looking to enjoy a quiet meal for two, celebrate a special occasion, or just need a last-minute dinner spot, we've got you covered. We offer a seamless and personalized booking experience. 😍
+
+<p align="center">
+    <img src="./Reservia/Home%20Page/images/Reservia.gif" alt="Reservia">
+</p>
 
 ## 🌟 Features:
 
