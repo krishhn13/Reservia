@@ -1,4 +1,4 @@
-![Reservia](./Reservia/Home%20Page/Images/Reservia.gif)
+![Reservia](./Reservia/Home%20Page/images/Reservia.gif)
 
 # 🍽️ **Welcome to Reservia** 🎉
 
