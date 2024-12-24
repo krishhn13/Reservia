@@ -1,5 +1,5 @@
 body{
-    background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080');
+    background-image: url('./images/bgg.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -13,13 +13,15 @@ body::-webkit-scrollbar{
 }
 
 .login-box{
-    background: rgba(255, 255, 255, 0.95);
-    width: 500px;
+    background: rgba(40, 20, 0, 0.8);
+    width: 700px;
     margin: 0 auto;
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 25px 50px var(--shadow-color);
     backdrop-filter: blur(1px);
+    
+    
 }
 
 .logo-container{
@@ -30,13 +32,13 @@ body::-webkit-scrollbar{
 .logo{
     width: 120px;
     height: 120px;
-    background: var(--primary-color);
+    background: #5c4329;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    box-shadow: 0 10px 20px var(--primary-shadow-color);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .logo::before{
@@ -63,14 +65,14 @@ body::-webkit-scrollbar{
 
 h1{
     text-align: center;
-    color: var(--font-color);
+    color: white;
     font-size: 28px;
     margin-bottom: 10px;
 }
 
 .tagline{
     text-align: center;
-    color: var(--secondary-color);
+    color: white;
     font-style: italic;
     margin-bottom: 20px;
 }
@@ -202,7 +204,7 @@ h1{
 .login-btn{
     width: 100%;
     padding: 15px;
-    background: var(--primary-color);
+    background: #4b3621;
     color: white;
     border: none;
     border-radius: 10px;
@@ -215,7 +217,7 @@ h1{
 }
 
 .login-btn:hover{
-    background: #ff626f;
+    background:  #9a7148;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px var(--hover-shadow-color);
 }
