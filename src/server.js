@@ -1,19 +1,16 @@
 let http = require('http');
 let url = require('url');
 let fs = require('fs');
-let path = require('path'); // Added to handle file paths and extensions
+let path = require('path');
 
 let server = http.createServer((req, res) => {
-    // Parse the URL
     let parsedUrl = url.parse(req.url, true); 
-    let pathname = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname; // Default to index.html for "/"
+    let pathname = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
 
-    // Resolve the file path
     let filePath = path.join(__dirname, pathname);
 
-    // Determine the content type based on file extension
     let extname = path.extname(filePath);
-    let contentType = 'text/html'; // Default content type
+    let contentType = 'text/html';
 
     switch (extname) {
         case '.css':
@@ -46,19 +43,16 @@ let server = http.createServer((req, res) => {
             break;
     }
 
-    // Check if the file exists and serve it
     fs.readFile(filePath, (err, data) => {
         if (err) {
             if (err.code === 'ENOENT') {
-                // File not found, send 404
                 send404(res);
-            } else {
-                // Some server error
+            } 
+            else {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
                 res.end(`Server Error: ${err.code}`);
             }
         } else {
-            // File found, serve it with correct content type
             res.writeHead(200, { 'Content-Type': contentType });
             res.end(data, 'utf8');
         }
