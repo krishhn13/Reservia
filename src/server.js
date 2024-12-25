@@ -1,63 +1,105 @@
-let http = require('http');
-let url = require('url');
-let fs = require('fs');
-let path = require('path');
+const http = require('http');
+const url = require('url');
+const fs = require('fs');
+const path = require('path');
 
-let server = http.createServer((req, res) => {
-    let parsedUrl = url.parse(req.url, true); 
-    let pathname = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
+// Predefined dummy users (for testing)
+const users = {
+    "testuser@reservia": "password123",
+    "admin@reservia": "admin123",
+};
 
-    let filePath = path.join(__dirname, pathname);
+const server = http.createServer((req, res) => {
+    const parsedUrl = url.parse(req.url, true);
+    const pathname = parsedUrl.pathname;
 
-    let extname = path.extname(filePath);
-    let contentType = 'text/html';
+    if (req.method === 'POST' && pathname === '/signup') {
+        // Signup logic (optional, you can comment this out for now)
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
 
-    switch (extname) {
-        case '.css':
-            contentType = 'text/css';
-            break;
-        case '.js':
-            contentType = 'application/javascript';
-            break;
-        case '.json':
-            contentType = 'application/json';
-            break;
-        case '.png':
-            contentType = 'image/png';
-            break;
-        case '.jpg':
-        case '.jpeg':
-            contentType = 'image/jpeg';
-            break;
-        case '.gif':
-            contentType = 'image/gif';
-            break;
-        case '.svg':
-            contentType = 'image/svg+xml';
-            break;
-        case '.wav':
-            contentType = 'audio/wav';
-            break;
-        default:
-            contentType = 'text/html';
-            break;
-    }
+        req.on('end', () => {
+            const { username, password } = JSON.parse(body);
 
-    fs.readFile(filePath, (err, data) => {
-        if (err) {
-            if (err.code === 'ENOENT') {
-                send404(res);
-            } 
-            else {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end(`Server Error: ${err.code}`);
+            if (!username || !password) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Username and password are required' }));
+                return;
             }
-        } else {
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(data, 'utf8');
-        }
-    });
+
+            if (users[username]) {
+                res.writeHead(409, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'User already exists' }));
+                return;
+            }
+
+            users[username] = password; // Add new user to the dummy database
+            res.writeHead(201, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'User registered successfully' }));
+        });
+
+    } else if (req.method === 'POST' && pathname === '/login') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            const { username, password } = JSON.parse(body);
+
+            if (!username || !password) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Username and password are required' }));
+                return;
+            }
+
+            if (users[username] && users[username] === password) {
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ message: 'Login successful' }));
+            } else {
+                res.writeHead(401, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid credentials' }));
+            }
+        });
+
+    } else {
+        // Serve static files (HTML, CSS, JS)
+        const filePath = path.join(__dirname, pathname === '/' ? '/index.html' : pathname);
+        const extname = path.extname(filePath);
+        const contentType = getContentType(extname);
+
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                if (err.code === 'ENOENT') {
+                    send404(res);
+                } else {
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end(`Server Error: ${err.code}`);
+                }
+            } else {
+                res.writeHead(200, { 'Content-Type': contentType });
+                res.end(data, 'utf8');
+            }
+        });
+    }
 });
+
+function getContentType(extname) {
+    switch (extname) {
+        case '.css': return 'text/css';
+        case '.js': return 'application/javascript';
+        case '.json': return 'application/json';
+        case '.png': return 'image/png';
+        case '.jpg':
+        case '.jpeg': return 'image/jpeg';
+        case '.gif': return 'image/gif';
+        case '.svg': return 'image/svg+xml';
+        case '.wav': return 'audio/wav';
+        default: return 'text/html';
+    }
+}
 
 function send404(res) {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
@@ -65,5 +107,6 @@ function send404(res) {
     res.end();
 }
 
-server.listen(3000);
-console.log('Server running at http://localhost:3000/');
+server.listen(3000, () => {
+    console.log('Server running at http://localhost:3000/');
+});

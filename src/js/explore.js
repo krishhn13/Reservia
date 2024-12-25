@@ -1,89 +1,85 @@
-const searchInput = document.querySelector('.search-input');
-const searchBtn = document.querySelector('.search-btn');
-const cuisineSelect = document.querySelector('.filter-select:nth-child(1)');
-const priceSelect = document.querySelector('.filter-select:nth-child(2)');
-const ratingSelect = document.querySelector('.filter-select:nth-child(3)');
-const restaurantList = document.getElementById('restaurantList');
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('.search-input');
+    const searchBtn = document.querySelector('.search-btn');
+    const filters = document.querySelectorAll('.filter-select');
+    const restaurantList = document.getElementById('restaurantList');
+    const allRestaurants = [...restaurantList.children];
 
-const allRestaurants = [...restaurantList.children];
+    function debounce(func, delay) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
 
-searchBtn.addEventListener('click', filterRestaurants);
-searchInput.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') filterRestaurants();
-});
-cuisineSelect.addEventListener('change', filterRestaurants);
-priceSelect.addEventListener('change', filterRestaurants);
-ratingSelect.addEventListener('change', filterRestaurants);
+    function filterRestaurants() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const selectedCuisine = filters[0].value.toLowerCase();
+        const selectedPrice = filters[1].value;
+        const selectedRating = filters[2].value;
 
-function filterRestaurants() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const selectedCuisine = cuisineSelect.value.toLowerCase();
-    const selectedPrice = priceSelect.value;
-    const selectedRating = ratingSelect.value;
-
-    allRestaurants.forEach(restaurant => {
-        let shouldShow = true;
-
-        const restaurantName = restaurant.querySelector('.title-3').textContent.toLowerCase();
-        const cuisineType = restaurant.querySelector('.cuisine-type').textContent.toLowerCase();
-        const location = restaurant.querySelector('.location').textContent.toLowerCase();
-        
-        if (searchTerm && !restaurantName.includes(searchTerm) && 
-            !cuisineType.includes(searchTerm) && !location.includes(searchTerm)) {
-            shouldShow = false;
-        }
-
-        if (selectedCuisine && !cuisineType.includes(selectedCuisine)) {
-            shouldShow = false;
-        }
-
-        if (selectedPrice) {
+        allRestaurants.forEach((restaurant) => {
+            const restaurantName = restaurant.querySelector('.title-3').textContent.toLowerCase();
+            const cuisineType = restaurant.querySelector('.cuisine-type').textContent.toLowerCase();
+            const location = restaurant.querySelector('.location').textContent.toLowerCase();
             const price = restaurant.querySelector('.price').textContent;
             const priceNum = getPriceRange(price);
-            
-            if (!isPriceInRange(priceNum, selectedPrice)) {
-                shouldShow = false;
-            }
-        }
-
-        if (selectedRating) {
             const rating = parseFloat(restaurant.querySelector('.rating span').textContent.replace(/[()]/g, ''));
-            
-            switch(selectedRating) {
-                case '4plus':
-                    if (rating < 4) shouldShow = false;
-                    break;
-                case '3plus':
-                    if (rating < 3) shouldShow = false;
-                    break;
-                case '2plus':
-                    if (rating < 2) shouldShow = false;
-                    break;
-            }
-        }
 
-        restaurant.style.display = shouldShow ? '' : 'none';
-    });
-}
+            const matchesSearch =
+                !searchTerm ||
+                [restaurantName, cuisineType, location].some((text) => text.includes(searchTerm));
+            const matchesCuisine = !selectedCuisine || cuisineType.includes(selectedCuisine);
+            const matchesPrice = !selectedPrice || isPriceInRange(priceNum, selectedPrice);
+            const matchesRating = !selectedRating || isRatingSufficient(rating, selectedRating);
 
-function getPriceRange(priceText) {
-    const prices = priceText.match(/\d+/g).map(Number);
-    return Math.max(...prices);
-}
-
-function isPriceInRange(price, range) {
-    switch(range) {
-        case '0-25':
-            return price <= 25;
-        case '25-50':
-            return price > 25 && price <= 50;
-        case '50-100':
-            return price > 50 && price <= 100;
-        case '100+':
-            return price > 100;
-        default:
-            return true;
+            restaurant.style.display = matchesSearch && matchesCuisine && matchesPrice && matchesRating ? '' : 'none';
+        });
     }
-}
 
-filterRestaurants();
+    function getPriceRange(priceText) {
+        const prices = (priceText.match(/\d+/g) || []).map(Number);
+        return prices.length ? Math.max(...prices) : 0;
+    }
+
+    function isPriceInRange(price, range) {
+        switch (range) {
+            case '0-25':
+                return price <= 25;
+            case '25-50':
+                return price > 25 && price <= 50;
+            case '50-100':
+                return price > 50 && price <= 100;
+            case '100+':
+                return price > 100;
+            default:
+                return true;
+        }
+    }
+
+    function isRatingSufficient(rating, threshold) {
+        switch (threshold) {
+            case '4plus':
+                return rating >= 4;
+            case '3plus':
+                return rating >= 3;
+            case '2plus':
+                return rating >= 2;
+            default:
+                return true;
+        }
+    }
+
+    const debouncedFilter = debounce(filterRestaurants, 300);
+
+    searchBtn.addEventListener('click', filterRestaurants);
+    searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') filterRestaurants();
+        else debouncedFilter();
+    });
+    filters.forEach((filter) => filter.addEventListener('change', filterRestaurants));
+
+    // Initial filter
+    filterRestaurants();
+});

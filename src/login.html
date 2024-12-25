@@ -10,9 +10,7 @@
             <link rel = "shortcut icon" href ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5zQzIc0nbzV04ns-mz3q7PwWJUYHLyHyQA&s" type = "image/x-icon">
            
         </head>
-        <body>
-            
-            <body style="background-image: url('./images/bgg.jpg'); background-size: cover; background-position: center; ">
+            <body>
             <div class = "container">
                 <div class = "login-box">
                     <div class = "decoration fork"></div>
@@ -26,45 +24,46 @@
                     <h1> Welcome to Reservia </h1>
                     <p class = "tagline"> Where Every Meal Tells a Story </p>
                     
-                    <form class = "login-form">
-                        <div class = "input-group">
-                            <label for = "email"> Email </label>
-                            <i class = "fas fa-envelope"></i>
-                            <input type = "email" id = "email" required placeholder = "your@email.com">
+                    <form class="login-form" method="POST" action="/login">
+                        <div class="input-group">
+                            <label for="email"> Email </label>
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="username" required placeholder="your@email.com">
                         </div>
-                        
-                        <div class = "input-group">
-                            <label for = "password"> Password </label>
-                            <i class = "fas fa-lock"></i>
-                            <input type = "password" id = "password" required placeholder = "••••••••">
+                    
+                        <div class="input-group">
+                            <label for="password"> Password </label>
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" required placeholder="••••••••">
                         </div>
-                        
-                        <div class = "remember-forgot">
+                    
+                        <div class="remember-forgot">
                             <label>
-                                <input type = "checkbox"> Remember me
+                                <input type="checkbox"> Remember me
                             </label>
-                            <a href = "#" class = "forgot-password"> Forgot Password? </a>
+                            <a href="#" class="forgot-password"> Forgot Password? </a>
                         </div>
-                        
-                        <button type = "submit" class = "login-btn">
-                            <i class = "fas fa-utensils"></i> LET'S DINE IN
+                    
+                        <button type="submit" class="login-btn">
+                            <i class="fas fa-utensils"></i> LET'S DINE IN
                         </button>
-                        
+                    </form>
+                    
                         <div class = "social-login">
                             <span> Or continue with </span>
                         </div>
                         
                         <div class = "social-icons">
-                            <a href = "#" class = "github">
+                            <a href = "#" class = "github" title ="github">
                                 <i class = "fab fa-github"></i>
                             </a>
-                            <a href = "#" class = "google">
+                            <a href = "#" class = "google" title = "google"> 
                                 <i class = "fab fa-google"></i>
                             </a>
-                            <a href = "#" class = "facebook">
+                            <a href = "#" class = "facebook" title = "facebook">
                                 <i class = "fab fa-facebook-f"></i>
                             </a>
-                            <a href = "#" class = "twitter">
+                            <a href = "#" class = "twitter" title = "twitter">
                                 <i class = "fab fa-twitter"></i>
                             </a>
                         </div>
@@ -75,5 +74,6 @@
                     </form>
                 </div>
             </div>
+            <script src="js/loginjs.js"></script>
         </body>
     </html>
