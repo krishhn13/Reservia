@@ -1,155 +1,231 @@
 <!DOCTYPE html>
-    <html lang = "en">
-        <head>
-            <meta charset = 'utf-8' />
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Locate and Route</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="css/tracking.css">
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css" rel="stylesheet" />
+    <link rel="icon" href="https://img.icons8.com/ios-filled/50/tesla-model-s.png" type="image/x-icon">
+    <style>
+        /* Fullscreen map */
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
 
-            <title> Locate and Route </title>
+        /* Centered input container */
+        .input-container {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 240px;
+        }
 
-            <meta name = 'viewport' content = 'initial-scale = 1,maximum-scale = 1,user-scalable = no' />
+        /* Inputs for geocoders */
+        .input-container .geocoder {
+            margin-bottom: 10px;
+            width: 100%;
+        }
 
-            <link rel="stylesheet" href="css/tracking.css">
+        /* Button */
+        .input-container button {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: white;
+            background: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-            <script src = 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.js'></script>
+        .input-container button:hover {
+            background: #0056b3;
+        }
 
-            <link href = 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css' rel = 'stylesheet' />
+        /* Info display */
+        .info {
+            text-align: center;
+            position: relative;
+            bottom: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            margin-top: 70px;
+            margin-left: 50%;
+            min-height: 0;
+            max-height: 100px;
+            width: 240px;
+        }
 
-            <script src = 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>
-            
-            <link href = 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' rel = 'stylesheet' />
-            
-            <link rel = "icon" href = "https://img.icons8.com/ios-filled/50/tesla-model-s.png" type = "image/x-icon">
-        </head>
+        /* Car marker styling */
+        .car {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
 
-        <body>
-            <div id = 'map'></div>
+    <div class="input-container">
+        <div id="geocoder-from" class="geocoder"></div>
+        <div id="geocoder-to" class="geocoder"></div>
+        <button onclick="findRoute()">Find Route</button>
+    </div>
 
-            <div class = "input-container">
-                <input type = "text" id = "from" placeholder = "Starting place" autocomplete = "off" />
-                <input type = "text" id = "to" placeholder = "Destination" autocomplete = "off" />
-                <button onclick = "findRoute()"> Find Route </button>
-            </div>
+    <div class="info" id="info"></div>
 
-            <div class = "info" id = "info"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic2FsaW5hMDAiLCJhIjoiY2p5MDN2ZGE3MDlxeTNtbWsxYnB4MnF1YSJ9.bYThsWUyR_Na7MVQ9st_cg';
 
-            <script>
-                mapboxgl.accessToken = 'pk.eyJ1Ijoic2FsaW5hMDAiLCJhIjoiY2p5MDN2ZGE3MDlxeTNtbWsxYnB4MnF1YSJ9.bYThsWUyR_Na7MVQ9st_cg';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [85.017, 30.457],
+            zoom: 5
+        });
 
-                const map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v11',
-                    center: [85.017, 30.457],
-                    zoom: 5
-                });
+        let fromCoords = null;
+        let toCoords = null;
 
-                const geocoder = new MapboxGeocoder({
-                    accessToken: mapboxgl.accessToken,
-                    mapboxgl: mapboxgl
-                });
+        // Geocoder for "From"
+        const geocoderFrom = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            placeholder: 'Starting place',
+            mapboxgl: mapboxgl
+        });
+        document.getElementById('geocoder-from').appendChild(geocoderFrom.onAdd(map));
 
-                map.addControl(geocoder);
+        // Geocoder for "To"
+        const geocoderTo = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            placeholder: 'Destination',
+            mapboxgl: mapboxgl
+        });
+        document.getElementById('geocoder-to').appendChild(geocoderTo.onAdd(map));
 
-                let carMarker;
-                let routeCoords;
-                let currentStep = 0;
+        // Update "fromCoords" when a place is selected in the "From" geocoder
+        geocoderFrom.on('result', (event) => {
+            fromCoords = event.result.center;
+        });
 
-                async function geocode(place) {
-                    const url  =  `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(place)}.json?access_token = ${mapboxgl.accessToken}`;
-                    const response  =  await fetch(url);
-                    const data  =  await response.json();
+        // Update "toCoords" when a place is selected in the "To" geocoder
+        geocoderTo.on('result', (event) => {
+            toCoords = event.result.center;
+        });
 
-                    if (data.features.length === 0) {
-                        throw new Error(`Place "${place}" not found.`);
-                    }
-                    return data.features[0].center;
+        let carMarker;
+        let routeCoords;
+        let currentStep = 0;
+
+        async function findRoute() {
+            if (!fromCoords || !toCoords) {
+                alert('Please select both starting place and destination.');
+                return;
+            }
+
+            try {
+                const directionsRequest = `https://api.mapbox.com/directions/v5/mapbox/driving/${fromCoords.join(",")};${toCoords.join(",")}?geometries=geojson&steps=true&access_token=${mapboxgl.accessToken}`;
+                const response = await fetch(directionsRequest);
+                const data = await response.json();
+
+                if (!data.routes || data.routes.length === 0) {
+                    throw new Error("No route found. Please check the inputs.");
                 }
 
-                async function findRoute() {
-                    const fromPlace = document.getElementById('from').value;
-                    const toPlace = document.getElementById('to').value;
+                routeCoords = data.routes[0].geometry.coordinates;
+                const distance = data.routes[0].distance;
+                const duration = data.routes[0].duration;
 
-                    try {
-                        const fromCoords = await geocode(fromPlace);
-                        const toCoords = await geocode(toPlace);
-
-                        const directionsRequest = `https://api.mapbox.com/directions/v5/mapbox/driving/${fromCoords.join(",")};${toCoords.join(",")}?geometries = geojson&steps = true&access_token = ${mapboxgl.accessToken}`;
-                        const response = await fetch(directionsRequest);
-                        const data = await response.json();
-
-                        routeCoords = data.routes[0].geometry.coordinates;
-                        const distance = data.routes[0].distance;
-                        const duration = data.routes[0].duration;
-
-                        if (map.getSource('route')) {
-                            map.getSource('route').setData({
+                if (map.getSource('route')) {
+                    map.getSource('route').setData({
+                        type: 'Feature',
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: routeCoords
+                        }
+                    });
+                } else {
+                    map.addLayer({
+                        id: 'route',
+                        type: 'line',
+                        source: {
+                            type: 'geojson',
+                            data: {
                                 type: 'Feature',
                                 geometry: {
                                     type: 'LineString',
                                     coordinates: routeCoords
                                 }
-                            });
-                        } 
-                        else {
-                            map.addLayer({
-                                id: 'route',
-                                type: 'line',
-                                source: {
-                                    type: 'geojson',
-                                    data: {
-                                        type: 'Feature',
-                                        geometry: {
-                                            type: 'LineString',
-                                            coordinates: routeCoords
-                                        }
-                                    }
-                                },
-                                layout: {
-                                    'line-join': 'round',
-                                    'line-cap': 'round'
-                                },
-                                paint: {
-                                    'line-color': '#ff0000',
-                                    'line-width': 4
-                                }
-                            });
+                            }
+                        },
+                        layout: {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        paint: {
+                            'line-color': '#ff0000',
+                            'line-width': 4
                         }
-
-                        const bounds = new mapboxgl.LngLatBounds();
-                        routeCoords.forEach(coord => bounds.extend(coord));
-                        map.fitBounds(bounds, { padding: 20 });
-
-                        animateCar(routeCoords);
-
-                        const distanceKm = (distance / 1000).toFixed(2);
-                        const durationMin = (duration / 60).toFixed(2);
-                        document.getElementById('info').innerHTML = `
-                            <p> <strong> Distance:</strong> ${distanceKm} km</p>
-                            <p> <strong> Duration:</strong> ${durationMin} mins</p>
-                        `;
-                    } 
-                    catch (error) {
-                        alert(error.message);
-                    }
+                    });
                 }
 
-                function animateCar(route) {
-                    if (carMarker) carMarker.remove();
-                    const car = document.createElement('div');
-                    car.className = 'car';
-                    carMarker = new mapboxgl.Marker(car).setLngLat(route[0]).addTo(map);
+                const bounds = new mapboxgl.LngLatBounds();
+                routeCoords.forEach(coord => bounds.extend(coord));
+                map.fitBounds(bounds, { padding: 20 });
 
-                    currentStep = 0;
-                    const speed = 1000;
+                animateCar(routeCoords);
 
-                    function move() {
-                        if (currentStep < route.length) {
-                            carMarker.setLngLat(route[currentStep]);
-                            currentStep++;
-                            setTimeout(move, speed);
-                        }
-                    }
+                const distanceKm = (distance / 1000).toFixed(2);
+                const durationMin = (duration / 60).toFixed(2);
+                document.getElementById('info').innerHTML = `
+                    <p><strong>Distance:</strong> ${distanceKm} km</p>
+                    <p><strong>Duration:</strong> ${durationMin} mins</p>
+                `;
+            } catch (error) {
+                alert(error.message);
+            }
+        }
 
-                    move();
+        function animateCar(route) {
+            if (carMarker) carMarker.remove();
+            const car = document.createElement('div');
+            car.className = 'car';
+            carMarker = new mapboxgl.Marker(car).setLngLat(route[0]).addTo(map);
+
+            currentStep = 0;
+            const speed = 1000;
+
+            function move() {
+                if (currentStep < route.length) {
+                    carMarker.setLngLat(route[currentStep]);
+                    currentStep++;
+                    setTimeout(move, speed);
                 }
-            </script>
-        </body>
-    </html>
+            }
+
+            move();
+        }
+    </script>
+</body>
+</html>
