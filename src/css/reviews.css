@@ -1,0 +1,124 @@
+.reviews-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.reviews-header {
+    text-align: center;
+    margin-bottom: 50px;
+    color: var(--white);
+}
+
+.reviews-header h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: var(--gold-crayola);
+}
+
+.reviews-header .subtitle {
+    font-size: 1.2em;
+    color: var(--quick-silver);
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.review-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.reviewer-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.reviewer-info h3 {
+    color: var(--gold-crayola);
+    margin: 0;
+}
+
+.review-date {
+    color: var(--quick-silver);
+    font-size: 0.9em;
+}
+
+.review-rating {
+    color: var(--gold-crayola);
+    margin-bottom: 10px;
+}
+
+.review-content {
+    color: var(--white);
+    line-height: 1.6;
+}
+
+.reviews-summary {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 50px;
+}
+
+.summary-stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat .number {
+    display: block;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--gold-crayola);
+}
+
+.stat .label {
+    color: var(--quick-silver);
+    font-size: 1.1em;
+}
+
+.stars {
+    color: var(--gold-crayola);
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .reviews-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-stats {
+        flex-direction: column;
+    }
+
+    .stat {
+        margin-bottom: 20px;
+    }
+}
