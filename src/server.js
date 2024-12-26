@@ -14,6 +14,7 @@ const server = http.createServer((req, res) => {
     const pathname = parsedUrl.pathname;
 
     if (req.method === 'POST' && pathname === '/signup') {
+        
         // Signup logic (optional, you can comment this out for now)
         let body = '';
         req.on('data', chunk => {

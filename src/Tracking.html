@@ -214,8 +214,8 @@
             carMarker = new mapboxgl.Marker(car).setLngLat(route[0]).addTo(map);
 
             currentStep = 0;
-            const speed = 1000;
-
+            const speed = 10000;
+            
             function move() {
                 if (currentStep < route.length) {
                     carMarker.setLngLat(route[currentStep]);
