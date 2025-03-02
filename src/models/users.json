@@ -1,0 +1,14 @@
+[
+        {
+          "username": "abc@gmail.com",
+          "password": "123"
+        },
+        {
+          "username": "user1@gmail.com",
+          "password": "password1"
+        },
+        {
+          "username": "admin@reservia.com",
+          "password": "adminHereBuddy!"
+        }
+      ]

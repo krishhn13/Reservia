@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+    <html lang = "en">
+        <head>
+            <meta charset = "UTF-8">
+            <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+
+            <title> Reservia | Payment Form </title>
+
+            <link rel = "stylesheet" href = "/css/payment.css">
+            <link href = "https://fonts.googleapis.com/css2?family = Poppins:wght@400;500;600;700&display = swap" rel = "stylesheet">
+            <link rel = "shortcut icon" href ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5zQzIc0nbzV04ns-mz3q7PwWJUYHLyHyQA&s" type = "image/x-icon">
+
+        </head>
+
+        <body>
+            <div class = "container">
+                <h1> Confirm Your Payment </h1>
+                <form id = "paymentForm">
+                    <div class = "first-row">
+                        <div class = "owner">
+                            <label for = "name">
+                                <h3> Name </h3>
+                            </label>
+
+                            <div class = "input-field">
+                                <input type = "text" id = "name" name = "name" required>
+                            </div>
+                        </div>
+
+                        <div class = "cvv">
+                            <label for = "cvv">
+                                <h3> Card CVV </h3>
+                            </label>
+
+                            <div class = "input-field">
+                                <input type = "password" id = "cvv" name = "cvv" maxlength = "3" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class = "second-row">
+                        <div class = "card-number">
+                            <label for = "card-number">
+                                <h3> Card Number </h3>
+                            </label>
+                            <div class = "input-field">
+                                <input type = "text" id = "card-number" name = "card-number" maxlength = "16" pattern = "\d{16}" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class = "third-row">
+                        <label for = "months">
+                            <h3> Expiration Date </h3>
+                        </label>
+
+                        <div class = "selection">
+                            <div class = "date">
+                                <select name = "months" id = "months" required>
+                                    <option value = "" disabled selected> Month </option>
+                                    <option value = "1"> Jan </option>
+                                    <option value = "2"> Feb </option>
+                                    <option value = "3"> Mar </option>
+                                    <option value = "4"> Apr </option>
+                                    <option value = "5"> May </option>
+                                    <option value = "6"> Jun </option>
+                                    <option value = "7"> Jul </option>
+                                    <option value = "8"> Aug </option>
+                                    <option value = "9"> Sep </option>
+                                    <option value = "10"> Oct </option>
+                                    <option value = "11"> Nov </option>
+                                    <option value = "12"> Dec </option>
+                                </select>
+
+                                <select name = "years" id = "years" required>
+                                    <option value = "" disabled selected> Year </option>
+                                    <option value = "2024"> 2024 </option>
+                                    <option value = "2025"> 2025 </option>
+                                    <option value = "2026"> 2026 </option>
+                                    <option value = "2027"> 2027 </option>
+                                    <option value = "2028"> 2028 </option>
+                                    <option value = "2029"> 2029 </option>
+                                    <option value = "2030"> 2030 </option>
+                                </select>
+                            </div>
+
+                            <div class = "cards">
+                                <img src = "/images/mc.png" alt = "MasterCard">
+                                <img src = "/images/vi.png" alt = "Visa">
+                                <img src = "/images/pp.png" alt = "PayPal">
+                            </div>
+                        </div>
+                    </div>
+                    <button type = "submit" id  =  "confirm-button"> Confirm Payment </button>
+                </form>
+            </div>
+
+            <script>
+                document.getElementById('paymentForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    let name = document.getElementById('name').value.trim();
+                    let cardNumber = document.getElementById('card-number').value;
+                    let cvv = document.getElementById('cvv').value;
+                    let month = document.getElementById('months').value;
+                    let year = document.getElementById('years').value;
+            
+                    if (!validateName(name)) {
+                        alert("Please enter a valid name (only alphabets, minimum 2 characters).");
+                        return;
+                    }
+                    if (!validateCardNumber(cardNumber)) {
+                        alert("Please enter a valid 16-digit card number.");
+                        return;
+                    }
+                    if (!validateCVV(cvv)) {
+                        alert("Please enter a valid 3-digit CVV.");
+                        return;
+                    }
+                    if (!validateExpirationDate(month, year)) {
+                        alert("Please enter a valid expiration date.");
+                        return;
+                    }
+            
+                    alert("Payment successful!");
+                    this.submit();
+                });
+            
+                function validateName(name) {
+                    const regex = /^[A-Za-z\s]{2,}$/;
+                    return regex.test(name);
+                }
+            
+                function validateCardNumber(cardNumber) {
+                    const regex = /^[0-9]{16}$/;
+                    return regex.test(cardNumber);
+                }
+            
+                function validateCVV(cvv) {
+                    const regex = /^[0-9]{3}$/;
+                    return regex.test(cvv);
+                }
+            
+                function validateExpirationDate(month, year) {
+                    const currentDate = new Date();
+                    const selectedDate = new Date(year, month - 1);
+                    return selectedDate > currentDate;
+                }
+            </script>
+        </body>
+    </html>
