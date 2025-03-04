@@ -47,7 +47,7 @@ router.post('/sign-up', async (req, res, next) => {
     await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2))
 
     console.log('✅ User registered successfully!')
-    res.status(201).json({ message: 'User registered successfully!', redirect: '/api/login' })
+    res.status(201).json({ message: 'User registered successfully!', redirect: '/api/explore' })
   } catch (err) {
     console.error('🔥 Error in sign-up:', err)
     next(err)
