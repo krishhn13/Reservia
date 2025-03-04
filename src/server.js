@@ -1,113 +1,63 @@
-const http = require('http');
-const url = require('url');
-const fs = require('fs');
-const path = require('path');
+const express = require('express')
+const path = require('path')
+const app = express()
+const PORT = 8080
+ 
+// Developer-defined middlewares
+const logger = require('./middlewares/logger')
+const { errorHandler, notFoundHandler } = require('./middlewares/errorHandler');
+// Built-in middlewares
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static(path.join(__dirname, 'public')))
 
-// Predefined dummy users (for testing)
-const users = {
-    "testuser@reservia": "password123",
-    "admin@reservia": "admin123",
-};
 
-const server = http.createServer((req, res) => {
-    const parsedUrl = url.parse(req.url, true);
-    const pathname = parsedUrl.pathname;
+// developer defined ones
+app.use(logger)
 
-    if (req.method === 'POST' && pathname === '/signup') {
-        
-        // Signup logic (optional, you can comment this out for now)
-        let body = '';
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
 
-        req.on('end', () => {
-            const { username, password } = JSON.parse(body);
+// API Routes
+const apiRoutes = require('./api/apiRoutes')
+app.use('/api', apiRoutes)
 
-            if (!username || !password) {
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Username and password are required' }));
-                return;
-            }
 
-            if (users[username]) {
-                res.writeHead(409, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'User already exists' }));
-                return;
-            }
 
-            users[username] = password; // Add new user to the dummy database
-            res.writeHead(201, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'User registered successfully' }));
-        });
+// sample hai yeh., asaani ke liye humne ise list bana di
 
-    } else if (req.method === 'POST' && pathname === '/login') {
-        let body = '';
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
+/*
+app.get('/api/login' , (req,res)=>{
+  res.sendfile(path.join(__dirname,'views','login.html'))  
+})
+*/
 
-        req.on('end', () => {
-            const { username, password } = JSON.parse(body);
+// Routes Array
+const pages = [
+  { route: '/', file: 'index.html' },
+  { route: '/api/login', file: 'login.html' },
+  { route: '/api/explore', file: 'explore.html' },
+  { route: '/api/sign-up', file: 'sign-up.html' },
+  { route: '/api/res', file: 'res.html' },
+  { route: '/api/contact', file: 'contact.html' },
+  { route: '/api/AboutUs', file: 'AboutUs.html' },
+  { route: '/api/order', file: 'order.html' },
+  { route: '/api/Tracking', file: 'Tracking.html' },
+  { route: '/api/feedback', file: 'feedback.html' },
+  { route: '/api/reviews', file: 'reviews.html' }
+]
 
-            if (!username || !password) {
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Username and password are required' }));
-                return;
-            }
+// Automatically Create Routes
+pages.forEach(page => {
+  app.get(page.route, (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', page.file))
+  })
+})
 
-            if (users[username] && users[username] === password) {
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ message: 'Login successful' }));
-            } else {
-                res.writeHead(401, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Invalid credentials' }));
-            }
-        });
+// Error Handler Middleware
 
-    } else {
-        // Serve static files (HTML, CSS, JS)
-        const filePath = path.join(__dirname, pathname === '/' ? '/index.html' : pathname);
-        const extname = path.extname(filePath);
-        const contentType = getContentType(extname);
+app.use(notFoundHandler)
+app.use(errorHandler)
 
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                if (err.code === 'ENOENT') {
-                    send404(res);
-                } else {
-                    res.writeHead(500, { 'Content-Type': 'text/plain' });
-                    res.end(`Server Error: ${err.code}`);
-                }
-            } else {
-                res.writeHead(200, { 'Content-Type': contentType });
-                res.end(data, 'utf8');
-            }
-        });
-    }
-});
-
-function getContentType(extname) {
-    switch (extname) {
-        case '.css': return 'text/css';
-        case '.js': return 'application/javascript';
-        case '.json': return 'application/json';
-        case '.png': return 'image/png';
-        case '.jpg':
-        case '.jpeg': return 'image/jpeg';
-        case '.gif': return 'image/gif';
-        case '.svg': return 'image/svg+xml';
-        case '.wav': return 'audio/wav';
-        default: return 'text/html';
-    }
-}
-
-function send404(res) {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.write('404 - File Not Found');
-    res.end();
-}
-
-server.listen(3000, () => {
-    console.log('Server running at http://localhost:3000/');
-});
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`)
+})

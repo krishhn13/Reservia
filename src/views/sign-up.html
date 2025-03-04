@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reservia - Create Your Account</title>
+        <link rel="stylesheet" href="/css/styles.css">
+        <link rel="stylesheet" href="/css/root.css">
+        <link rel="stylesheet" href="/css/login.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel = "shortcut icon" href ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5zQzIc0nbzV04ns-mz3q7PwWJUYHLyHyQA&s" type = "image/x-icon">
+    </head>
+    <body>
+        <header class = "header" data-header>
+            <div class = "container">
+
+                <a href = "/" class = "logo">
+                    <img src = "/images/HomePageImages/logo.png" width = "160" height = "50" alt = "Reservia - Home">
+                </a>
+
+                <nav class = "navbar" data-navbar>
+
+                    <button class = "close-btn" aria-label = "close menu" data-nav-toggler>
+                        <ion-icon name = "close-outline" aria-hidden = "true"></ion-icon>
+                    </button>
+
+                    <a href = "/" class = "logo">
+                        <img src = "/images/HomePageImages/logo.png" width = "160" height = "50" alt = "Reservia - Home">
+                    </a>
+
+                    <ul class = "navbar-list">
+                        <li class = "navbar-item">
+                            <a href = "/api/login" class = "navbar-link hover-underline ">
+                            <div class = "separator"></div>
+                            <span class = "span"> Login </span>
+                            </a>
+                        </li>
+
+                        <li class = "navbar-item">
+                            <a href = "/api/explore" class = "navbar-link hover-underline ">
+                            <div class = "separator"></div>
+                            <span class = "span"> Explore </span>
+                            </a>
+                        </li>
+
+                        <li class = "navbar-item">
+                            <a href = "/api/res" class = "navbar-link hover-underline ">
+                            <div class = "separator"></div>
+                            <span class = "span"> Reservations </span>
+                            </a>
+                        </li>
+
+                        <li class = "navbar-item">
+                            <a href = "/api/contact" class = "navbar-link hover-underline ">
+                            <div class = "separator"></div>
+                            <span class = "span"> Contact Us </span>
+                            </a>
+                        </li>
+
+                        <li class = "navbar-item">
+                            <a href = "/api/AboutUs" class = "navbar-link hover-underline ">
+                            <div class = "separator"></div>
+                            <span class = "span"> About Us </span>
+                            </a>
+                        </li>
+
+                        <li class = "navbar-item">
+                            <a href = "/api/order" class = "navbar-link hover-underline">
+                            <div class = "separator"></div>
+                            <span class = "span"> Orders </span>
+                            </a>
+                        </li>
+
+                        <li class = "navbar-item">
+                            <a href = "/api/Tracking" class = "navbar-link hover-underline">
+                            <div class = "separator"></div>
+                            <span class = "span"> Order Tracking </span>
+                            </a>
+                        </li>
+
+                        <li class = "navbar-item">
+                            <a href = "/api/feedback" class = "navbar-link hover-underline">
+                            <div class = "separator"></div>
+                            <span class = "span"> Feedback </span>
+                            </a>
+                        </li>
+
+                        <li class = "navbar-item">
+                            <a href = "/api/reviews" class = "navbar-link hover-underline">
+                            <div class = "separator"></div>
+
+                            <span class = "span"> Reviews </span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <a href = "/api/res class = "btn btn-secondary">
+                    <span class = "text text-1"> Book a Table </span>
+                    <span class = "text text-2" aria-hidden = "true"> Book a Table </span>
+                </a>
+
+                <button class = "nav-open-btn" aria-label = "open menu" data-nav-toggler>
+                    <span class = "line line-1"></span>
+                    <span class = "line line-2"></span>
+                    <span class = "line line-3"></span>
+                </button>
+
+                <div class = "overlay" data-nav-toggler data-overlay></div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="login-box">
+                <div class="decoration fork"></div>
+
+                <div class="logo-container">
+                    <div class="logo">
+                        <span> R </span>
+                    </div>
+                </div>
+
+                <h1> Join Reservia </h1>
+                <p class="tagline"> Sign up to reserve your table effortlessly </p>
+
+                <form class="login-form" action="/api/sign-up" method="POST" onsubmit="return explore(event);">
+                    <div class="input-group">
+                        <label for="name"> Name </label>
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" name="name" required placeholder="Your Full Name">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email"> Email </label>
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" required placeholder="your@email.com">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password"> Password </label>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" required placeholder="••••••••">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="confirm-password"> Confirm Password </label>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirm-password" name="confirm-password" required placeholder="••••••••">
+                    </div>
+
+                    <button type="submit" class="login-btn">  
+                        <i class="fas fa-user-plus"></i> CREATE ACCOUNT
+                    </button>
+
+                    <div class="social-login">
+                        <span> Or sign up with </span>
+                    </div>
+
+                    <div class="social-icons">
+                        <a href="#" class="github" title="Github">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="google" title="Google">
+                            <i class="fab fa-google"></i>
+                        </a>
+                        <a href="#" class="facebook" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="twitter" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+
+                    <p class="signup-link">
+                        Already have an account? <a href="/api/login"> Log in </a>
+                    </p>
+                </form>
+            </div>
+        </div>
+        <script>
+            function explore(event) {
+                event.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+        
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match!");
+                    return false;
+                }
+        
+                fetch('/api/sign-up', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: email, password })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    alert(result.message);
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                    }
+                })
+                .catch(error => {
+                    alert("Something went wrong!");
+                    console.error(error);
+                });
+            }
+        </script>
+            
+    </body>
+</html>
