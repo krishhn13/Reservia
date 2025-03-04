@@ -2,20 +2,33 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const PORT = 8080
-
+ 
 // Developer-defined middlewares
 const logger = require('./middlewares/logger')
-const errorHandler = require('./middlewares/errorHandler')
-
+const { errorHandler, notFoundHandler } = require('./middlewares/errorHandler');
 // Built-in middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(logger)
 app.use(express.static(path.join(__dirname, 'public')))
+
+
+// developer defined ones
+app.use(logger)
+
 
 // API Routes
 const apiRoutes = require('./api/apiRoutes')
 app.use('/api', apiRoutes)
+
+
+
+// sample hai yeh., asaani ke liye humne ise list bana di
+
+/*
+app.get('/api/login' , (req,res)=>{
+  res.sendfile(path.join(__dirname,'views','login.html'))  
+})
+*/
 
 // Routes Array
 const pages = [
@@ -40,6 +53,8 @@ pages.forEach(page => {
 })
 
 // Error Handler Middleware
+
+app.use(notFoundHandler)
 app.use(errorHandler)
 
 // Start Server

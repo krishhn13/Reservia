@@ -1,16 +1,18 @@
-// Error Handler Middleware
 const errorHandler = (err, req, res, next) => {
-    console.error(`🔥 Error: ${err.message}\n${err.stack}`) // Better logging
+    console.error(`🔥 Error: ${err.message}`); // Console pe error log karega
 
-    // Set status code (default 500 if not provided)
-    const statusCode = err.status || 500
-
-    res.status(statusCode).json({
-        success: false, // Useful for API responses
-        error: 'Something went wrong!',
+    res.status(err.status || 500).json({
+        success: false,
         message: err.message || 'Internal Server Error',
-        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined // Show stack only in development
-    })
-}
+    });
+};
 
-module.exports = errorHandler
+// 404 Handler (Unknown Routes)
+const notFoundHandler = (req, res, next) => {
+    res.status(404).json({
+        success: false,
+        message: `Route ${req.originalUrl} not found!`,
+    });
+};
+
+module.exports = { errorHandler, notFoundHandler };
