@@ -3,60 +3,21 @@ const path = require('path')
 const app = express()
 const PORT = 8080
 
-//developer-defined middlewares
+// Developer-defined middlewares
 const logger = require('./middlewares/logger')
 const errorHandler = require('./middlewares/errorHandler')
 
-
-//built-in middlewares
+// Built-in middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(logger)
 app.use(express.static(path.join(__dirname, 'public')))
 
+// API Routes
 const apiRoutes = require('./api/apiRoutes')
 app.use('/api', apiRoutes)
 
-//---------------------------------- Routes-----------------------------------------------
-// app.get('/',(req,res)=>{
-//   res.sendFile(path.join(__dirname,'views','index.html'))
-// })
-
-
-// app.get('/api/login', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'login.html'))
-// })
-
-// app.get('/api/explore', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'explore.html'))
-// })
-
-// app.get('/api/sign-up', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'sign-up.html'))
-// })
-// app.get('/api/res', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'res.html'))
-// })
-// app.get('/api/contact', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'contact.html'))
-// })
-// app.get('/api/AboutUs', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'AboutUs.html'))
-// })
-// app.get('/api/order', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'order.html'))
-// })
-// app.get('/api/Tracking', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'Tracking.html'))
-// })
-// app.get('/api/feedback', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'feedback.html'))
-// })
-// app.get('/api/reviews', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'reviews.html'))
-// })
-
-// Routes Array (To Avoid Repetition)
+// Routes Array
 const pages = [
   { route: '/', file: 'index.html' },
   { route: '/api/login', file: 'login.html' },
@@ -77,7 +38,6 @@ pages.forEach(page => {
     res.sendFile(path.join(__dirname, 'views', page.file))
   })
 })
-
 
 // Error Handler Middleware
 app.use(errorHandler)

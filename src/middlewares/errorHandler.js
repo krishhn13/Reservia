@@ -1,10 +1,16 @@
-// Error Handler Middleware to catch and respond to errors
+// Error Handler Middleware
 const errorHandler = (err, req, res, next) => {
-        console.error(err.stack) // Log the error stack to the console for debugging
-        // Send a response with the error status and message
-        res.status(500).send({
-            error: 'Something went wrong!',
-            message: err.message || 'Internal Server Error' // Include error message if available
-        })
-    }
-    module.exports = errorHandler
+    console.error(`🔥 Error: ${err.message}\n${err.stack}`) // Better logging
+
+    // Set status code (default 500 if not provided)
+    const statusCode = err.status || 500
+
+    res.status(statusCode).json({
+        success: false, // Useful for API responses
+        error: 'Something went wrong!',
+        message: err.message || 'Internal Server Error',
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined // Show stack only in development
+    })
+}
+
+module.exports = errorHandler
