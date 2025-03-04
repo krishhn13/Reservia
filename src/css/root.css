@@ -1,10 +1,10 @@
-*{
+/* *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
+} */
 
-:root{
+/* :root{
     --primary-color: #ff4757;
     --secondary-color: #636e72;
     --font-color: #2d3436;
@@ -14,4 +14,4 @@
     --shadow-color: rgba(0, 0, 0, 0.3);
     --primary-shadow-color: rgba(255, 71, 87, 0.3);
     --hover-shadow-color: rgba(255, 71, 87, 0.4);
-}
+} */

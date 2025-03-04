@@ -1,5 +1,6 @@
 body{
-    background-image: url('../images/bgg.jpg');
+    /* background-image: url('../images/bgg.jpg'); */
+    background-color: #3B2F2F;
     background-size: cover;
     background-position: center;
 }
@@ -12,7 +13,7 @@ body::-webkit-scrollbar{
 }
 
 .login-box{
-    background: rgba(40, 20, 0, 0.8);
+    background: #5A3E36;
     width: 700px;
     margin: 0 auto;
     padding: 40px;
@@ -31,7 +32,7 @@ body::-webkit-scrollbar{
 .logo{
     width: 120px;
     height: 120px;
-    background: #5c4329;
+    background: #A67B5B;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -106,7 +107,9 @@ h1{
 .input-group i{
     position: absolute;
     left: 15px;
-    top: 45px;
+    /* top: 45px; */
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 20px;
 }
 
@@ -203,7 +206,7 @@ h1{
 .login-btn{
     width: 100%;
     padding: 15px;
-    background: #4b3621;
+    background: #A67B5B;
     color: white;
     border: none;
     border-radius: 10px;
