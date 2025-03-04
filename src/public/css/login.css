@@ -19,9 +19,7 @@ body::-webkit-scrollbar{
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 25px 50px var(--shadow-color);
-    backdrop-filter: blur(1px);
-    
-    
+    backdrop-filter: blur(1px);    
 }
 
 .logo-container{
@@ -225,19 +223,8 @@ h1{
 }
 
 .remember-forgot{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center;
     margin: 25px 0;
-}
-
-.remember-forgot label{
-    display: flex;
-    cursor: pointer;
-}
-
-.remember-forgot input[type = "checkbox"]{
-    margin-right: 4px;
     cursor: pointer;
 }
 
@@ -311,4 +298,8 @@ h1{
 @keyframes float{
     0%, 100%{ transform: translateY(0); }
     50%{ transform: translateY(-10px); }
+}
+
+#firstTime{
+    font-size: 25px;
 }

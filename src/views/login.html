@@ -127,20 +127,17 @@
                     <form class="login-form" method="POST" action="/api/login">
                         <div class="input-group">
                             <label for="email"> Email </label>
-                            <i class="fas fa-envelope"></i>
+                                    <i class="fa-solid fa-envelope" style="color: brown;padding-top:40px;"></i>  <!-- Brown -->
                             <input type="email" id="email" name="username" required placeholder="your@email.com">
                         </div>
                     
                         <div class="input-group">
                             <label for="password"> Password </label>
-                            <i class="fas fa-lock"></i>
+                            <i class="fas fa-lock" style="color: brown;padding-top: 40px;"></i>
                             <input type="password" id="password" name="password" required placeholder="••••••••">
                         </div>
                     
                         <div class="remember-forgot">
-                            <label>
-                                <input type="checkbox"> Remember me
-                            </label>
                             <a href="#" class="forgot-password"> Forgot Password? </a>
                         </div>
                     
@@ -168,8 +165,11 @@
                             </a>
                         </div>
                         
-                        <p class = "signup-link">
-                            First time foodie? <a href = "/api/sign-up"> Create an account </a>
+                        <p class = "signup-link" >
+                                <p id = "firstTime"style="text-align: center;">
+                                    First time foodie?
+                                </p>
+                         <a href = "/api/sign-up"style="text-align: center;text-decoration:underline"> Create an account </a>
                         </p>
                     </form>
                 </div>
