@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
-const morgan = require('morgan');
-const helmet = require('helmet');
+// const cors = require('cors');
+// const morgan = require('morgan');
+// const helmet = require('helmet');
 const app = express();
 
 const PORT = 8080;
@@ -17,9 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Third-party middlewares
-app.use(cors()); // Enable CORS for all routes
-app.use(morgan('dev')); // Log HTTP requests
-app.use(helmet()); // Secure HTTP headers
+// app.use(cors()); // Enable CORS for all routes
+// app.use(morgan('dev')); // Log HTTP requests
+// app.use(helmet()); // Secure HTTP headers
 
 // Developer-defined middleware
 app.use(logger);
