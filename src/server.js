@@ -1,10 +1,11 @@
 const express = require('express');
 const path = require('path');
-// const cors = require('cors');
-// const morgan = require('morgan');
-// const helmet = require('helmet');
-const app = express();
+const debug = require('debug')('app:server'); // Debug Middleware
+const rateLimit = require('express-rate-limit'); // Rate Limiting Middleware
+const timeout = require('connect-timeout'); // Request Timeout Middleware
+const slowDown = require('express-slow-down'); // Slow Down Middleware
 
+const app = express();
 const PORT = 8080;
 
 // Developer-defined middlewares
@@ -16,10 +17,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Third-party middlewares
-// app.use(cors()); // Enable CORS for all routes
-// app.use(morgan('dev')); // Log HTTP requests
-// app.use(helmet()); // Secure HTTP headers
+// Debugging Middleware
+debug('Initializing server...');
+
+// Rate Limiting Middleware (Only for API routes)
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Max 100 requests per window
+  message: "Too many requests from this IP, please try again later."
+});
+app.use('/api', apiLimiter);
+
+// Slow Down Middleware (Helps prevent abuse by slowing requests)
+const speedLimiter = slowDown({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  delayAfter: 50, // 50 requests ke baad slow karega
+  delayMs: () => 500 // Har extra request pe 500ms delay
+});
+
+app.use('/api', speedLimiter);
+
+// Timeout Middleware (Global Timeout for Slow Requests)
+app.use(timeout('10s'));
+app.use((req, res, next) => {
+  if (!req.timedout) next();
+});
 
 // Developer-defined middleware
 app.use(logger);
@@ -27,6 +49,13 @@ app.use(logger);
 // API Routes
 const apiRoutes = require('./api/apiRoutes');
 app.use('/api', apiRoutes);
+
+// Slow API Route for Testing
+app.get('/api/slow', (req, res) => {
+  setTimeout(() => {
+    res.json({ message: 'This response was intentionally delayed by 5 seconds.' });
+  }, 5000); // 5-second delay
+});
 
 // Routes Array
 const pages = [
@@ -46,7 +75,6 @@ const pages = [
 // Automatically Create Routes
 pages.forEach(page => {
   app.get(page.route, (req, res) => {
-    res.header("X-Content-Type-Options", "nosniff"); // Example security header using helmet
     res.sendFile(path.join(__dirname, 'views', page.file));
   });
 });
@@ -57,5 +85,6 @@ app.use(errorHandler);
 
 // Start Server
 app.listen(PORT, () => {
+  debug(`Server is running at http://localhost:${PORT}`);
   console.log(`Server is running at http://localhost:${PORT}`);
 });
