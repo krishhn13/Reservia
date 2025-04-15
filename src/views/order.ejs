@@ -26,7 +26,7 @@
     </div>
     <script>
         // Fetch bookings for the logged-in user
-        fetch('/api/bookings')
+        fetch('/bookings')
             .then(response => response.json())
             .then(data => {
                 const ordersContainer = document.getElementById('orders-container');
