@@ -59,6 +59,48 @@ app.get('/api/slow', (req, res) => {
   }, 5000);
 });
 
+// Home page
+app.get('/', (req, res) => {
+const images=[
+  "/images/HomePageImages/hero-slider-1.jpg",//0
+  "/images/HomePageImages/hero-slider-2.jpg",//1
+  "/images/HomePageImages/hero-slider-3.jpg",//2
+  '/images/HomePageImages/logo.png',//3
+  "/images/HomePageImages/about-banner.jpg",//4
+  "/images/HomePageImages/about-abs-image.jpg",//5
+  "/images/HomePageImages/about-abs-image.jpg", //6
+  "/images/HomePageImages/intimate_dining.jpg",//7
+  "/images/HomePageImages/ro_dinning.jpg",//8
+  "/images/HomePageImages/family_dinning.jpg",//9
+  "/images/HomePageImages/outdoor_dinning.jpg",//10
+  "/images/HomePageImages/custom_ambiance.jpg",//11
+  "/images/HomePageImages/wine_dinning.jpg",//12
+  "/images/HomePageImages/shape-5.png",//13
+  "/images/HomePageImages/shape-6.png" ,//14
+  "/images/HomePageImages/features-icon-1.png",//15
+  "/images/HomePageImages/features-icon-2.png",//16
+  "/images/HomePageImages/features-icon-3.png",//17
+  "/images/HomePageImages/features-icon-4.png" ,//18
+  "/images/HomePageImages/event-1.jpg",//19
+  "/images/HomePageImages/event-1.jpg",//20
+  "/images/HomePageImages/event-3.jpg"//21
+];
+  res.render('index', {images})
+})
+
+// Contact page
+app.get('/contact',(req,res)=>{
+  const images=[
+    "/images/logo.png",//0
+    "/images/yay1.jpg"//1
+
+  ];
+  res.render('contact', { images });
+})
+
+
+
+//About us page
 app.get('/about',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -70,6 +112,7 @@ app.get('/about',(req,res)=>{
   res.render('AboutUs', { images });
 })
 
+//login
 app.get('/login',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -77,6 +120,8 @@ app.get('/login',(req,res)=>{
   res.render('login', { images });
 })
 
+
+//order
 app.get('/order',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',  
@@ -84,6 +129,8 @@ app.get('/order',(req,res)=>{
   res.render('order', { images });
 })
 
+
+//payment
 app.get('payment',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',  
@@ -94,6 +141,8 @@ app.get('payment',(req,res)=>{
   res.render('payment', { images });
 })
 
+
+//reservation
 app.get('/res',( req, res) => {
   const images=[
     '/images/HomePageImages/logo.png',  
@@ -102,6 +151,8 @@ app.get('/res',( req, res) => {
   res.render('res', { images });
 })
 
+
+//reviews
 app.get('/reviews',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -109,6 +160,7 @@ app.get('/reviews',(req,res)=>{
   res.render('reviews', { images });
 })
 
+//signup
 app.get('/sign-up',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -123,7 +175,6 @@ app.get('/tracking',(req,res)=>{
   res.render('tracking', { images });
 })
 
-app.get
 // Error handlers
 app.use(notFoundHandler);
 app.use(errorHandler);

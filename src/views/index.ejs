@@ -22,8 +22,9 @@
 
             <link rel = "stylesheet" href = "/css/styles.css">
 
-            <link rel = "preload" as = "image" href = "/images/HomePageImages/hero-slider-1.jpg">
-            <link rel = "preload" as = "image" href = "/images/HomePageImages/hero-slider-2.jpg">
+            <link rel = "preload" as = "image" href = "<%= images[0] %>">
+            <link rel = "preload" as = "image" href = "<%= images[1] %>">
+            <link rel = "preload" as = "image" href = "<%= images[2] %>">
             <link rel = "preload" as = "image" href = "/images/HomePageImages/hero-slider-3.jpg">
         </head>
 
@@ -37,7 +38,7 @@
                 <div class = "container">
 
                     <a href = "/" class = "logo">
-                        <img src = "/images/HomePageImages/logo.png" width = "160" height = "50" alt = "Reservia - Home">
+                        <img src = "<%=images[3]%>" width = "160" height = "50" alt = "Reservia - Home">
                     </a>
 
                     <nav class = "navbar" data-navbar>
@@ -47,7 +48,7 @@
                         </button>
 
                         <a href = "/" class = "logo">
-                            <img src = "/images/HomePageImages/logo.png" width = "160" height = "50" alt = "Reservia - Home">
+                            <img src = "<%=images[3]%>" width = "160" height = "50" alt = "Reservia - Home">
                         </a>
 
                         <ul class = "navbar-list">
@@ -138,7 +139,7 @@
                         <ul class = "hero-slider" data-hero-slider>
                             <li class = "slider-item active" data-hero-slider-item>
                                 <div class = "slider-bg">
-                                <img src = "/images/HomePageImages/hero-slider-1.jpg" width = "1880" height = "950" alt = "Elegant dining area" class = "img-cover">
+                                <img src = "<%=images[0]%>" width = "1880" height = "950" alt = "Elegant dining area" class = "img-cover">
                                 </div>
 
                                 <p class = "label-2 section-subtitle slider-reveal"> Reserve. Relax. Rejoice. </p>
@@ -159,7 +160,7 @@
 
                             <li class = "slider-item" data-hero-slider-item>
                                 <div class = "slider-bg">
-                                    <img src = "/images/HomePageImages/hero-slider-2.jpg" width = "1880" height = "950" alt = "Cozy dining table setup" class = "img-cover">
+                                    <img src = "<%=images[1]%>" width = "1880" height = "950" alt = "Cozy dining table setup" class = "img-cover">
                                 </div>
 
                                 <p class = "label-2 section-subtitle slider-reveal"> Ambiance Tailored to You </p>
@@ -175,7 +176,7 @@
 
                             <li class = "slider-item" data-hero-slider-item>
                                 <div class = "slider-bg">
-                                    <img src = "/images/HomePageImages/hero-slider-3.jpg" width = "1880" height = "950" alt = "Delicious food setup" class = "img-cover">
+                                    <img src = "<%=images[2]%>" width = "1880" height = "950" alt = "Delicious food setup" class = "img-cover">
                                 </div>
 
                                 <p class = "label-2 section-subtitle slider-reveal"> Unforgettable Flavors </p>
@@ -227,14 +228,14 @@
                         </div>
 
                         <figure class = "about-banner">
-                            <img src = "/images/HomePageImages/about-banner.jpg" width = "570" height = "570" loading = "lazy" alt = "about banner" class = "w-100" data-parallax-item data-parallax-speed = "1">
+                            <img src ="<%= images[4] %>"  width = "570" height = "570" loading = "lazy" alt = "about banner" class = "w-100" data-parallax-item data-parallax-speed = "1">
 
                             <div class = "abs-img abs-img-1 has-before" data-parallax-item data-parallax-speed = "1.75">
-                                <img src = "/images/HomePageImages/about-abs-image.jpg" width = "285" height = "285" loading = "lazy" alt = "" class = "w-100">
+                                <img src = "<%=images[5]%>" width = "285" height = "285" loading = "lazy" alt = "" class = "w-100">
                             </div>
 
                             <div class = "abs-img abs-img-2 has-before">
-                                <img src = "/images/HomePageImages/badge-2.png" width = "133" height = "134" loading = "lazy" alt = "">
+                                <img src = "<%= images[6] %>" width = "133" height = "134" loading = "lazy" alt = "">
                             </div>
                         </figure>
                     </div>
@@ -250,7 +251,7 @@
                             <li>
                                 <div class = "menu-card hover:card">
                                     <figure class = "card-banner img-holder" style = "--width: 10; --height: 10;">
-                                        <img src = "/images/HomePageImages/intimate_dining.jpg" width = "100" height = "100" loading = "lazy" alt = "Intimate Dining" class = "img-cover">
+                                        <img src = "<%=images[7]%>" width = "100" height = "100" loading = "lazy" alt = "Intimate Dining" class = "img-cover">
                                     </figure>
 
                                     <div>
@@ -273,7 +274,7 @@
                             <li>
                                 <div class = "menu-card hover:card">
                                     <figure class = "card-banner img-holder" style = "--width: 100; --height: 100;">
-                                        <img src = "/images/HomePageImages/ro_dinning.jpg" width = "100" height = "100" loading = "lazy" alt = "Romantic Dinner" class = "img-cover">
+                                        <img src = "<%=images[8]%>" width = "100" height = "100" loading = "lazy" alt = "Romantic Dinner" class = "img-cover">
                                     </figure>
 
                                     <div>
@@ -295,7 +296,7 @@
                             <li>
                                 <div class = "menu-card hover:card">
                                     <figure class = "card-banner img-holder" style = "--width: 100; --height: 100;">
-                                        <img src = "/images/HomePageImages/family_dinning.jpg" width = "100" height = "100" loading = "lazy" alt = "Family Feast" class = "img-cover">
+                                        <img src = "<%=images[9]%>" width = "100" height = "100" loading = "lazy" alt = "Family Feast" class = "img-cover">
                                     </figure>
 
                                     <div>
@@ -317,7 +318,7 @@
                             <li>
                                 <div class = "menu-card hover:card">
                                     <figure class = "card-banner img-holder" style = "--width: 100; --height: 100;">
-                                        <img src = "/images/HomePageImages/outdoor_dinning.jpg" width = "100" height = "100" loading = "lazy" alt = "Outdoor Dining" class = "img-cover">
+                                        <img src = "<%=images[10]%>" width = "100" height = "100" loading = "lazy" alt = "Outdoor Dining" class = "img-cover">
                                     </figure>
 
                                     <div>
@@ -341,7 +342,7 @@
                             <li>
                                 <div class = "menu-card hover:card">
                                     <figure class = "card-banner img-holder" style = "--width: 100; --height: 100;">
-                                        <img src = "/images/HomePageImages/custom_ambiance.jpg" width = "100" height = "100" loading = "lazy" alt = "Custom Ambiance" class = "img-cover">
+                                        <img src = "<%=images[11]%>" width = "100" height = "100" loading = "lazy" alt = "Custom Ambiance" class = "img-cover">
                                     </figure>
 
                                     <div>
@@ -363,7 +364,7 @@
                             <li>
                                 <div class = "menu-card hover:card">
                                     <figure class = "card-banner img-holder" style = "--width: 100; --height: 100;">
-                                        <img src = "/images/HomePageImages/wine_dinning.jpg" width = "100" height = "100" loading = "lazy" alt = "Wine Pairing" class = "img-cover">
+                                        <img src = "<%=images[12]%>" width = "100" height = "100" loading = "lazy" alt = "Wine Pairing" class = "img-cover">
                                     </figure>
 
                                     <div>
@@ -391,8 +392,8 @@
                             <span class = "text text-2" aria-hidden = "true"> Book Your Experience </span>
                         </a>
 
-                        <img src = "/images/HomePageImages/shape-5.png" width = "921" height = "1036" loading = "lazy" alt = "shape" class = "shape shape-2 move-anim">
-                        <img src = "/images/HomePageImages/shape-6.png" width = "343" height = "345" loading = "lazy" alt = "shape" class = "shape shape-3 move-anim">
+                        <img src = "<%=images[13]%>" width = "921" height = "1036" loading = "lazy" alt = "shape" class = "shape shape-2 move-anim">
+                        <img src = "<%=images[14]%>" width = "343" height = "345" loading = "lazy" alt = "shape" class = "shape shape-3 move-anim">
                     </div>
                 </section>
 
@@ -502,7 +503,7 @@
                             <li class = "feature-item">
                                 <div class = "feature-card">
                                     <div class = "card-icon">
-                                        <img src = "/images/HomePageImages/features-icon-1.png" width = "100" height = "80" loading = "lazy" alt = "Hygienic Food Icon">
+                                        <img src = "<%=images[15]%>" width = "100" height = "80" loading = "lazy" alt = "Hygienic Food Icon">
                                     </div>
 
                                     <h3 class = "title-2 card-title"> Hygienic Food </h3>
@@ -514,7 +515,7 @@
                             <li class = "feature-item">
                                 <div class = "feature-card">
                                     <div class = "card-icon">
-                                        <img src = "/images/HomePageImages/features-icon-2.png" width = "100" height = "80" loading = "lazy" alt = "Fresh Environment Icon">
+                                        <img src = "<%=images[16]%>" width = "100" height = "80" loading = "lazy" alt = "Fresh Environment Icon">
                                     </div>
 
                                     <h3 class = "title-2 card-title"> Relaxing Ambience </h3>
@@ -526,7 +527,7 @@
                             <li class = "feature-item">
                                 <div class = "feature-card">
                                     <div class = "card-icon">
-                                        <img src = "/images/HomePageImages/features-icon-3.png" width = "100" height = "80" loading = "lazy" alt = "Skilled Chefs Icon">
+                                        <img src = "<%=images[17]%>" width = "100" height = "80" loading = "lazy" alt = "Skilled Chefs Icon">
                                     </div>
 
                                     <h3 class = "title-2 card-title"> Expert Chefs </h3>
@@ -538,7 +539,7 @@
                             <li class = "feature-item">
                                 <div class = "feature-card">
                                     <div class = "card-icon">
-                                        <img src = "/images/HomePageImages/features-icon-4.png" width = "100" height = "80" loading = "lazy" alt = "Event & Party Icon">
+                                        <img src = "<%=images[18]%>" width = "100" height = "80" loading = "lazy" alt = "Event & Party Icon">
                                     </div>
 
                                     <h3 class = "title-2 card-title"> Event & Party Hosting </h3>
@@ -560,7 +561,7 @@
                             <li>
                                 <div class = "event-card has-before hover:shine">
                                     <div class = "card-banner img-holder" style = "--width: 350; --height: 450;">
-                                        <img src = "/images/HomePageImages/event-1.jpg" width = "350" height = "450" loading = "lazy"
+                                        <img src = "<%=images[19]%>" width = "350" height = "450" loading = "lazy"
                                         alt = "Exclusive wine tasting night at Reservia." class = "img-cover">
 
                                         <time class = "publish-date label-2" datetime = "2024-12-25"> 25/12/2024 </time>
@@ -579,7 +580,7 @@
                             <li>
                                 <div class = "event-card has-before hover:shine">
                                     <div class = "card-banner img-holder" style = "--width: 350; --height: 450;">
-                                        <img src = "/images/HomePageImages/event-2.jpg" width = "350" height = "450" loading = "lazy"
+                                        <img src = "<%=images[20]%>" width = "350" height = "450" loading = "lazy"
                                         alt = "Live jazz music evening at Reservia." class = "img-cover">
 
                                         <time class = "publish-date label-2" datetime = "2024-12-31"> 31/12/2024 </time>
@@ -598,7 +599,7 @@
                             <li>
                                 <div class = "event-card has-before hover:shine">
                                     <div class = "card-banner img-holder" style = "--width: 350; --height: 450;">
-                                        <img src = "/images/HomePageImages/event-3.jpg" width = "350" height = "450" loading = "lazy"
+                                        <img src = "<%=images[21]%>" width = "350" height = "450" loading = "lazy"
                                         alt = "Cooking masterclass by top chefs at Reservia." class = "img-cover">
 
                                         <time class = "publish-date label-2" datetime = "2025-01-05"> 05/01/2025 </time>
@@ -648,7 +649,7 @@
                                                                     display: inline-block; 
                                                                     margin-bottom: 1rem;
                                                                     ">
-                                <img src = "/images/HomePageImages/logo.png" width = "180" height = "50" loading = "lazy" alt = "Reservia Home">
+                                <img src = "<%=images[3]%>" width = "180" height = "50" loading = "lazy" alt = "Reservia Home">
                             </a>
                             <p style = "margin-bottom: 1rem; font-size: 0.9rem;"> Restaurant St, Delicious City, London 9578, UK </p>
                             <p> <a href = "mailto:support@reservia.com" style = "text-decoration: none; color: #B8860B;"> support@reservia.com </a> </p>
