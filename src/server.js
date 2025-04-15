@@ -123,6 +123,22 @@ app.get('/tracking',(req,res)=>{
   res.render('tracking', { images });
 })
 
+app.get('/explore',(req,res)=>{
+  const images=[
+    '/images/HomePageImages/logo.png',
+    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4',
+    'https://images.unsplash.com/photo-1552566626-52f8b828add9',
+    'https://images.unsplash.com/photo-1514933651103-005eec06c04b',
+    'https://images.unsplash.com/photo-1585937421612-70a008356fbe',
+    'https://images.unsplash.com/photo-1552566626-52f8b828add9',
+    'https://images.unsplash.com/photo-1544148103-0773bf10d330',
+    'https://images.unsplash.com/photo-1565299585323-38d6b0865b47',
+    'https://images.unsplash.com/photo-1532347922424-c652d9b7208e',
+    'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c'
+  ];
+  res.render('explore', { images });
+})
+
 app.get
 // Error handlers
 app.use(notFoundHandler);
