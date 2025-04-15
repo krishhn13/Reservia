@@ -58,28 +58,16 @@ app.get('/api/slow', (req, res) => {
     res.json({ message: 'This response was intentionally delayed by 5 seconds.' });
   }, 5000);
 });
-
-// Pages using EJS (no more res.sendFile)
-const pages = [
-  { route: '/', file: 'index' },
-  { route: '/login', file: 'login' },
-  { route: '/explore', file: 'explore' },
-  { route: '/sign-up', file: 'sign-up' },
-  { route: '/res', file: 'res' },
-  { route: '/contact', file: 'contact' },
-  { route: '/AboutUs', file: 'AboutUs' },
-  { route: '/order', file: 'order' },
-  { route: '/Tracking', file: 'Tracking' },
-  { route: '/feedback', file: 'feedback' },
-  { route: '/reviews', file: 'reviews' }
-];
-
-// Render EJS views
-pages.forEach(page => {
-  app.get(page.route, (req, res) => {
-    res.render(page.file); // It will render src/views/<file>.ejs
-  });
-});
+app.get('/about',(req,res)=>{
+  const images=[
+    '/images/HomePageImages/logo.png',
+    '/vids/AboutUsBackground1.mp4',
+    "/vids/AboutUsBackground1.webm",
+    "/images/chef1.jpg",
+    "/images/dining1.jpg","/images/kitchen1.jpg" 
+  ];
+  res.render('AboutUs', { images });
+})
 
 // Error handlers
 app.use(notFoundHandler);
