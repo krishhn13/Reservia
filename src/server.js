@@ -58,6 +58,7 @@ app.get('/api/slow', (req, res) => {
     res.json({ message: 'This response was intentionally delayed by 5 seconds.' });
   }, 5000);
 });
+
 app.get('/about',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -69,6 +70,60 @@ app.get('/about',(req,res)=>{
   res.render('AboutUs', { images });
 })
 
+app.get('/login',(req,res)=>{
+  const images=[
+    '/images/HomePageImages/logo.png',
+  ];
+  res.render('login', { images });
+})
+
+app.get('/order',(req,res)=>{
+  const images=[
+    '/images/HomePageImages/logo.png',  
+  ];
+  res.render('order', { images });
+})
+
+app.get('payment',(req,res)=>{
+  const images=[
+    '/images/HomePageImages/logo.png',  
+    '/images/mc.png',
+    '/images/vi.png',
+    '/images/pp.png'
+  ];
+  res.render('payment', { images });
+})
+
+app.get('/res',( req, res) => {
+  const images=[
+    '/images/HomePageImages/logo.png',  
+    'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80'
+  ];
+  res.render('res', { images });
+})
+
+app.get('/reviews',(req,res)=>{
+  const images=[
+    '/images/HomePageImages/logo.png',
+  ];
+  res.render('reviews', { images });
+})
+
+app.get('/sign-up',(req,res)=>{
+  const images=[
+    '/images/HomePageImages/logo.png',
+  ];
+  res.render('sign-up', { images });
+})
+
+app.get('/tracking',(req,res)=>{
+  const images=[
+    '/images/HomePageImages/logo.png',
+  ];
+  res.render('tracking', { images });
+})
+
+app.get
 // Error handlers
 app.use(notFoundHandler);
 app.use(errorHandler);
