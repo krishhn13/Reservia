@@ -97,6 +97,13 @@ app.get('/contact',(req,res)=>{
   ];
   res.render('contact', { images });
 })
+//feedback
+app.get('/feedback',(req,res)=>{
+  const images=[
+    "/images/HomePageImages/logo.png"
+  ];
+  res.render('feedback', { images });
+})
 
 
 
