@@ -59,6 +59,55 @@ app.get('/api/slow', (req, res) => {
   }, 5000);
 });
 
+// Home page
+app.get('/', (req, res) => {
+const images=[
+  "/images/HomePageImages/hero-slider-1.jpg",//0
+  "/images/HomePageImages/hero-slider-2.jpg",//1
+  "/images/HomePageImages/hero-slider-3.jpg",//2
+  '/images/HomePageImages/logo.png',//3
+  "/images/HomePageImages/about-banner.jpg",//4
+  "/images/HomePageImages/about-abs-image.jpg",//5
+  "/images/HomePageImages/about-abs-image.jpg", //6
+  "/images/HomePageImages/intimate_dining.jpg",//7
+  "/images/HomePageImages/ro_dinning.jpg",//8
+  "/images/HomePageImages/family_dinning.jpg",//9
+  "/images/HomePageImages/outdoor_dinning.jpg",//10
+  "/images/HomePageImages/custom_ambiance.jpg",//11
+  "/images/HomePageImages/wine_dinning.jpg",//12
+  "/images/HomePageImages/shape-5.png",//13
+  "/images/HomePageImages/shape-6.png" ,//14
+  "/images/HomePageImages/features-icon-1.png",//15
+  "/images/HomePageImages/features-icon-2.png",//16
+  "/images/HomePageImages/features-icon-3.png",//17
+  "/images/HomePageImages/features-icon-4.png" ,//18
+  "/images/HomePageImages/event-1.jpg",//19
+  "/images/HomePageImages/event-1.jpg",//20
+  "/images/HomePageImages/event-3.jpg"//21
+];
+  res.render('index', {images})
+})
+
+// Contact page
+app.get('/contact',(req,res)=>{
+  const images=[
+    "/images/logo.png",//0
+    "/images/yay1.jpg"//1
+
+  ];
+  res.render('contact', { images });
+})
+//feedback
+app.get('/feedback',(req,res)=>{
+  const images=[
+    "/images/HomePageImages/logo.png"
+  ];
+  res.render('feedback', { images });
+})
+
+
+
+//About us page
 app.get('/about',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -70,6 +119,7 @@ app.get('/about',(req,res)=>{
   res.render('AboutUs', { images });
 })
 
+//login
 app.get('/login',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -77,6 +127,8 @@ app.get('/login',(req,res)=>{
   res.render('login', { images });
 })
 
+
+//order
 app.get('/order',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',  
@@ -84,6 +136,8 @@ app.get('/order',(req,res)=>{
   res.render('order', { images });
 })
 
+
+//payment
 app.get('payment',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',  
@@ -94,6 +148,8 @@ app.get('payment',(req,res)=>{
   res.render('payment', { images });
 })
 
+
+//reservation
 app.get('/res',( req, res) => {
   const images=[
     '/images/HomePageImages/logo.png',  
@@ -102,6 +158,8 @@ app.get('/res',( req, res) => {
   res.render('res', { images });
 })
 
+
+//reviews
 app.get('/reviews',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -109,6 +167,7 @@ app.get('/reviews',(req,res)=>{
   res.render('reviews', { images });
 })
 
+//signup
 app.get('/sign-up',(req,res)=>{
   const images=[
     '/images/HomePageImages/logo.png',
@@ -123,23 +182,6 @@ app.get('/tracking',(req,res)=>{
   res.render('tracking', { images });
 })
 
-app.get('/explore',(req,res)=>{
-  const images=[
-    '/images/HomePageImages/logo.png',
-    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4',
-    'https://images.unsplash.com/photo-1552566626-52f8b828add9',
-    'https://images.unsplash.com/photo-1514933651103-005eec06c04b',
-    'https://images.unsplash.com/photo-1585937421612-70a008356fbe',
-    'https://images.unsplash.com/photo-1552566626-52f8b828add9',
-    'https://images.unsplash.com/photo-1544148103-0773bf10d330',
-    'https://images.unsplash.com/photo-1565299585323-38d6b0865b47',
-    'https://images.unsplash.com/photo-1532347922424-c652d9b7208e',
-    'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c'
-  ];
-  res.render('explore', { images });
-})
-
-app.get
 // Error handlers
 app.use(notFoundHandler);
 app.use(errorHandler);
