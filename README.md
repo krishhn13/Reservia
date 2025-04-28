@@ -40,7 +40,7 @@ Welcome to **Reservia**, where dining meets convenience! Whether you're looking 
 
 ## 💡 Tech Stack:
 
-- **Frontend**: HTML, CSS, JavaScript, React
+- **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB 🗃️
 - **Authentication**: JWT 🔐
