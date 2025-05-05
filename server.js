@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Defining the various routes and their assets
 
 //home route
-app.get('/home',(req,res)=>{
+app.get(['/', '/home'],(req,res)=>{
   const images=[
     'assets/images/HomePageImages/logo.png',//3
     "assets/images/HomePageImages/hero-slider-1.jpg",//0
