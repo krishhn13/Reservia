@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <%-include("includes/feedback.ejs")%>
+</head>
+<body>
+<%-include("includes/styles.ejs")%>
+<%-include("includes/header.ejs")%>
+  <div class="feedback-container">
+    <h2><i class="fas fa-comment-dots"></i> We Value Your Feedback</h2>
+
+    <!-- STAR RATING SECTION -->
+    <div class="rating-group">
+      <div class="stars" id="stars">
+        <i class="fas fa-star" data-rating="1"></i>
+        <i class="fas fa-star" data-rating="2"></i>
+        <i class="fas fa-star" data-rating="3"></i>
+        <i class="fas fa-star" data-rating="4"></i>
+        <i class="fas fa-star" data-rating="5"></i>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-user"></i>
+      <input type="text" placeholder="Your Name">
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-envelope"></i>
+      <input type="email" placeholder="Your Email">
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-pen"></i>
+      <textarea placeholder="Write your feedback..."></textarea>
+    </div>
+
+    <button class="submit-btn">Submit Feedback</button>
+  </div>
+  <br><br>
+  <%-include("includes/footer.ejs")%>
+  <script>
+    const stars = document.querySelectorAll('#stars i');
+    let selectedRating = 0;
+
+    stars.forEach((star, idx) => {
+      star.addEventListener('mouseover', () => {
+        stars.forEach((s, i) => {
+          s.classList.toggle('hovered', i <= idx);
+        });
+      });
+
+      star.addEventListener('mouseout', () => {
+        stars.forEach((s, i) => {
+          s.classList.remove('hovered');
+        });
+      });
+
+      star.addEventListener('click', () => {
+        selectedRating = star.getAttribute('data-rating');
+        stars.forEach((s, i) => {
+          s.classList.toggle('selected', i < selectedRating);
+        });
+        console.log("Selected Rating:", selectedRating);
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservia - Customer Reviews</title>
+    <link rel="stylesheet" href="/css/reviews.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5zQzIc0nbzV04ns-mz3q7PwWJUYHLyHyQA&s" type="image/x-icon">
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <%-include("includes/styles.ejs")%>
+    <%-include("includes/reviews.ejs")%>
+</head>
+<body>
+        <%-include("includes/header.ejs",{image:images})%>
+    <div class="reviews-container">
+        <header class="reviews-header">
+            <h1>What Our Customers Say</h1>
+            <p class="subtitle">Real experiences from our valued guests</p>
+        </header>
+
+        <div class="reviews-grid" id="reviewsGrid">
+            <!-- Reviews will be dynamically loaded here -->
+        </div>
+
+        <div class="reviews-summary">
+            <div class="summary-stats">
+                <div class="stat">
+                    <span class="number">4.8</span>
+                    <span class="label">Average Rating</span>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                <div class="stat">
+                    <span class="number">2.5k+</span>
+                    <span class="label">Happy Customers</span>
+                </div>
+                <div class="stat">
+                    <span class="number">95%</span>
+                    <span class="label">Satisfaction Rate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%-include("includes/footer.ejs")%>
+    <script>
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getDatabase, ref, get, child } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { firebaseConfig } from './firebase-config.js';
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Function to load and display reviews
+async function loadReviews() {
+    try {
+        const dbRef = ref(db);
+        const snapshot = await get(child(dbRef, 'feedback'));
+        const reviewsGrid = document.getElementById('reviewsGrid');
+        
+        if (snapshot.exists()) {
+            const reviews = Object.values(snapshot.val());
+            reviews.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            reviewsGrid.innerHTML = ''; // Clear existing content
+            reviews.forEach(review => {
+                const reviewCard = createReviewCard(review);
+                reviewsGrid.innerHTML += reviewCard;
+            });
+        }
+    } catch (error) {
+        console.error('Error loading reviews:', error);
+    }
+}
+
+// Function to create a review card
+function createReviewCard(review) {
+    const date = new Date(review.timestamp).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    return `
+        <div class="review-card">
+            <div class="review-header">
+                <img src="https://api.dicebear.com/6.x/initials/svg?seed=${review.name}" 
+                     alt="${review.name}" 
+                     class="reviewer-avatar">
+                <div class="reviewer-info">
+                    <h3>${review.name}</h3>
+                    <span class="review-date">${date}</span>
+                </div>
+            </div>
+            <div class="review-rating">
+                ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+            </div>
+            <div class="review-content">
+                <p>${review.feedback}</p>
+            </div>
+        </div>
+    `;
+}
+
+// Load reviews when the page loads
+document.addEventListener('DOMContentLoaded', loadReviews);
+    </script>
+    <script type="module" src="/js/firebase-config.js"></script>
+</body>
+</html>

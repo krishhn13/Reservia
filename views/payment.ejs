@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <%-include("includes/styles.ejs")%>
+</head>
+
+<body class="min-h-screen flex flex-col bg-gradient-to-br from-[#c2b280] via-[#e0cda9] to-[#f5f5dc]">
+
+  <!-- Header at top -->
+  <header>
+    <%-include("includes/header.ejs")%>
+  </header>
+
+  <!-- Main content centered between header and footer -->
+  <main class="flex-grow flex items-center justify-center px-4 py-10">
+    <div class="bg-white shadow-2xl rounded-3xl p-10 max-w-2xl w-full border border-[#d1bfa3]">
+      <h2 class="text-4xl font-extrabold text-center text-[#4b3c2a] mb-8">Reservia Payment</h2>
+
+      <form class="space-y-6">
+        <div>
+          <label class="block text-[#4b3c2a] font-semibold text-lg mb-2" for="card-name">Cardholder Name</label>
+          <input id="card-name" type="text" placeholder="John Doe" class="w-full px-6 py-3 border text-lg rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#8b5e3c]" required />
+        </div>
+
+        <div>
+          <label class="block text-[#4b3c2a] font-semibold text-lg mb-2" for="card-number">Card Number</label>
+          <input id="card-number" type="text" placeholder="1234 5678 9012 3456" class="w-full px-6 py-3 border text-lg rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#8b5e3c]" required />
+        </div>
+
+        <div class="flex space-x-6">
+          <div class="flex-1">
+            <label class="block text-[#4b3c2a] font-semibold text-lg mb-2" for="expiry">Expiry</label>
+            <input id="expiry" type="text" placeholder="MM/YY" class="w-full px-6 py-3 border text-lg rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#8b5e3c]" required />
+          </div>
+          <div class="flex-1">
+            <label class="block text-[#4b3c2a] font-semibold text-lg mb-2" for="cvc">CVC</label>
+            <input id="cvc" type="text" placeholder="123" class="w-full px-6 py-3 border text-lg rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#8b5e3c]" required />
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-[#8b5e3c] hover:bg-[#6e472e] text-white text-lg font-bold py-3 px-6 rounded-2xl transition duration-300">
+          Proceed for Payment
+        </button>
+      </form>
+
+      <p class="text-sm text-gray-600 text-center mt-8">
+        Your payment is end-to-end encrypted. We never store your card details.
+      </p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto">
+    <%-include("includes/footer.ejs", { image: images })%>
+  </footer>
+</body>
+</html>
