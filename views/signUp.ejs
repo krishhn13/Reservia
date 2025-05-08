@@ -4,13 +4,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Reservia - Create Your Account</title>
-        <%-include("includes/styles.ejs")%>
+        <%- include("includes/styles.ejs") %>
         <%-include("includes/login.ejs")%>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <link rel = "shortcut icon" href ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5zQzIc0nbzV04ns-mz3q7PwWJUYHLyHyQA&s" type = "image/x-icon">
+        <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5zQzIc0nbzV04ns-mz3q7PwWJUYHLyHyQA&s" type="image/x-icon">
     </head>
     <body>
-        <%-include("includes/header.ejs")%>
+        <%- include("includes/header.ejs") %>
         <div class="container">
             <div class="login-box">
                 <div class="decoration fork"></div>
@@ -24,28 +24,28 @@
                 <h1> Join Reservia </h1>
                 <p class="tagline"> Sign up to reserve your table effortlessly </p>
 
-                <form class="login-form" action="/sign-up" method="POST" onsubmit="return explore(event);">
+                <form class="login-form" action="/sign-up" method="POST">
                     <div class="input-group">
                         <label for="name"> Name </label>
-                        <i class="fas fa-user" style ="color:brown"></i>
+                        <i class="fas fa-user" style="color:brown"></i>
                         <input type="text" id="name" name="name" required placeholder="Your Full Name">
                     </div>
 
                     <div class="input-group">
                         <label for="email"> Email </label>
-                        <i class="fas fa-envelope" style ="color:brown"></i>
+                        <i class="fas fa-envelope" style="color:brown"></i>
                         <input type="email" id="email" name="email" required placeholder="your@email.com">
                     </div>
 
                     <div class="input-group">
                         <label for="password"> Password </label>
-                        <i class="fas fa-lock" style ="color:brown"></i>
+                        <i class="fas fa-lock" style="color:brown"></i>
                         <input type="password" id="password" name="password" required placeholder="••••••••">
                     </div>
 
                     <div class="input-group">
                         <label for="confirm-password"> Confirm Password </label>
-                        <i class="fas fa-lock" style ="color:brown"></i>
+                        <i class="fas fa-lock" style="color:brown"></i>
                         <input type="password" id="confirm-password" name="confirm-password" required placeholder="••••••••">
                     </div>
 
@@ -78,39 +78,8 @@
                 </form>
             </div>
         </div>
-        
-        <%-include("includes/footer.ejs")%>
-        <script>
-            function explore(event) {
-                event.preventDefault();
-                
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('confirm-password').value;
-        
-                if (password !== confirmPassword) {
-                    alert("Passwords do not match!");
-                    return false;
-                }
-        
-                fetch('/sign-up', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: email, password })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    alert(result.message);
-                    if (result.redirect) {
-                        window.location.href = result.redirect;
-                    }
-                })
-                .catch(error => {
-                    alert("Something went wrong!");
-                    console.error(error);
-                });
-            }
-        </script>
-            
+
+        <%- include("includes/footer.ejs") %>
+
     </body>
 </html>
