@@ -1,20 +1,37 @@
+// server.js
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const app = express();
 
-const User = require('./models/login'); // Mongoose model
+// Models
+const User = require("./models/login");
+const Reservation = require("./models/reservation");
+const Review = require("./models/review");
 
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log("MongoDB connected");
+}).catch((err) => {
+    console.error("MongoDB connection failed:", err);
+});
+
+// App config
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
 
 // Home route
 app.get(['/', '/home'], (req, res) => {
-  const images = [
-      'assets/images/HomePageImages/logo.png',
+    const images = [
+       'assets/images/HomePageImages/logo.png',
       "assets/images/HomePageImages/hero-slider-1.jpg",
       "assets/images/HomePageImages/hero-slider-2.jpg",
       "assets/images/HomePageImages/hero-slider-3.jpg",
@@ -37,12 +54,11 @@ app.get(['/', '/home'], (req, res) => {
       "https://images.pexels.com/photos/225228/pexels-photo-225228.jpeg?auto=compress&cs=tinysrgb&w=600",
       "assets/images/HomePageImages/event-3.jpg"
   ];
-  const success = req.query.success;
-  res.render('index', { images, success });
+    const success = req.query.success;
+    res.render('index', { images, success });
 });
 
-
-// About route
+/// About route
 app.get("/about", (req, res) => {
     const images = [
         'assets/images/HomePageImages/logo.png',
@@ -81,93 +97,201 @@ app.get('/explore', (req, res) => {
     ];
     res.render('explore', { images });
 });
-
-// Reservation route
-app.get('/reservation', (req, res) => {
+// Reservation GET (show form)
+app.get("/reservation", (req, res) => {
     const images = [
         'assets/images/HomePageImages/logo.png',
-        'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=2340&q=80'
+        'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c'
     ];
-    res.render('reservation', { images });
+    res.render("reservation", { images });
 });
 
-// Feedback route
-app.get('/feedback', (req, res) => {
-    const images = [
-        'assets/images/HomePageImages/logo.png'
-    ];
-    res.render('feedback', { images });
-});
-
-// Orders route
-app.get('/order', async (req, res) => {
-    const images = [
-        'assets/images/HomePageImages/logo.png'
-    ];
-
+// Reservation POST (handle form)
+app.post("/reservation", async (req, res) => {
     try {
-        const response = await fetch('http://localhost:8080/reservation');
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const reservationData = await response.json();
+        const reservation = new Reservation(req.body);
+        await reservation.save();
+        res.redirect("/order");
+    } catch (err) {
+        console.error("Reservation error:", err);
+        res.status(500).send("Failed to make reservation.");
+    }
+});
 
+// Order (get reservations)
+app.get('/order', async (req, res) => {
+    const images = ['assets/images/HomePageImages/logo.png'];
+    try {
+        const reservationData = await Reservation.find({});
         const orders = reservationData.map(reservation => ({
-            orderId: reservation.bookingId,
-            orderDate: new Date(reservation.reservationDate),
+            orderId: reservation._id,
+            orderEmail: reservation.email,
+            orderDate: reservation.date,
             items: [
+                { name: `Reservation By:${reservation.name} @ ${reservation.restaurant}`, quantity: 1 },
                 { name: 'Table Reservation', quantity: reservation.guests },
                 { name: `Time: ${reservation.time}`, quantity: 1 },
                 { name: `Ambiance: ${reservation.music}`, quantity: 1 },
                 ...(reservation.requests ? [{ name: `Special Request: ${reservation.requests}`, quantity: 1 }] : [])
             ],
-            totalAmount: 'N/A',
+            totalAmount: reservation.guests * 500,
             status: 'Reserved'
         }));
-
-        res.render('order', { images, orders });
-
-    } catch (error) {
-        console.error('Failed to fetch reservations:', error);
-        res.render('order', { images, orders: [] });
+        res.render("order", { images, orders });
+    } catch (err) {
+        console.error("Order error:", err);
+        res.render("order", { images, orders: [] });
     }
 });
 
-// Payment route
-app.get('/payment', (req, res) => {
+// Reservation DELETE
+app.delete("/reservation/:id", async (req, res) => {
+    try {
+        await Reservation.findByIdAndDelete(req.params.id);
+        res.json({ message: "Reservation deleted successfully." });
+    } catch (err) {
+        console.error("Delete error:", err);
+        res.status(500).json({ message: "Failed to delete reservation." });
+    }
+});
+
+// Reservation UPDATE
+app.put("/reservation/:id", async (req, res) => {
+    try {
+        await Reservation.findByIdAndUpdate(req.params.id, req.body);
+        res.json({ message: "Reservation updated successfully." });
+    } catch (err) {
+        console.error("Update error:", err);
+        res.status(500).json({ message: "Failed to update reservation." });
+    }
+});
+
+// Feedback GET
+app.get("/feedback", (req, res) => {
+    const images = ['assets/images/HomePageImages/logo.png'];
+    res.render("feedback", { images });
+});
+
+// Feedback POST
+app.post("/feedback", async (req, res) => {
+    try {
+        const newReview = new Review({
+            name: req.body.name,
+            email: req.body.email,
+            feedback: req.body.feedback,
+            rating: req.body.rating,
+            timestamp: new Date()
+        });
+        await newReview.save();
+        res.redirect("/reviews");
+    } catch (err) {
+        console.error("Feedback error:", err);
+        res.status(500).send("Failed to submit feedback.");
+    }
+});
+
+// Reviews GET
+app.get("/reviews", async (req, res) => {
+    try {
+        const reviews = await Review.find().sort({ timestamp: -1 });
+        const images = ['assets/images/HomePageImages/logo.png'];
+        res.render("reviews", { images, reviews });
+    } catch (err) {
+        console.error("Review fetch error:", err);
+        res.render("reviews", { images: [], reviews: [] });
+    }
+});
+
+
+app.post("/reviews/add", async (req, res) => {
+    try {
+        const { name, email, rating, feedback } = req.body;
+
+        const newReview = new Review({
+            name,
+            email,
+            rating: parseInt(rating), // ensure it's a number
+            feedback
+        });
+
+        await newReview.save();
+        res.redirect("/reviews");
+    } catch (err) {
+        console.error("Review submission error:", err);
+        res.status(500).send("Error saving review");
+    }
+});
+
+
+// Like review
+app.put("/reviews/:id/like", async (req, res) => {
+    try {
+        const review = await Review.findById(req.params.id);
+        review.likes = (review.likes || 0) + 1;
+        await review.save();
+        res.json({ success: true });
+    } catch (err) {
+        console.error("Like error:", err);
+        res.status(500).json({ success: false });
+    }
+});
+
+// Edit review
+app.put("/reviews/:id", async (req, res) => {
+    try {
+        const { name, email, feedback, rating } = req.body;
+        await Review.findByIdAndUpdate(req.params.id, { name, email, feedback, rating });
+        res.json({ success: true });
+    } catch (err) {
+        console.error("Edit error:", err);
+        res.status(500).json({ success: false });
+    }
+});
+
+// Delete review
+app.delete("/reviews/:id", async (req, res) => {
+    try {
+        await Review.findByIdAndDelete(req.params.id);
+        res.json({ success: true });
+    } catch (err) {
+        console.error("Delete error:", err);
+        res.status(500).json({ success: false });
+    }
+});
+
+// Payment routes
+app.get('/process-payment', (req, res) => {
+    res.render('thankyou');
+});
+
+app.get("/payment", (req, res) => {
     const images = [
         'assets/images/HomePageImages/logo.png',
         'assets/images/mc.png',
         'assets/images/vi.png',
         'assets/images/pp.png'
     ];
-    res.render('payment', { images });
+    res.render("payment", { images });
 });
 
-// Tracking route
-app.get('/tracking', (req, res) => {
+app.get("/tracking", (req, res) => {
     const images = ['assets/images/HomePageImages/logo.png'];
-    res.render('tracking', { images });
+    res.render("tracking", { images });
 });
 
-// Login route (GET)
-app.get('/login', (req, res) => {
+// Auth GET
+app.get("/login", (req, res) => {
     const images = ['assets/images/HomePageImages/logo.png'];
-    res.render('login', { images, message: undefined, redirect: undefined }); // <-- Fix added here
+    res.render("login", { images, message: undefined, redirect: undefined });
 });
 
-// Sign-up route (GET)
-app.get('/sign-up', (req, res) => {
+app.get("/sign-up", (req, res) => {
     const images = ['assets/images/HomePageImages/logo.png'];
-    res.render('signUp', { images });
+    res.render("signUp", { images });
 });
 
-// Reviews route
-app.get('/reviews', (req, res) => {
-    const images = ['assets/images/HomePageImages/logo.png'];
-    res.render('reviews', { images });
-});
-
-// Signup POST
-app.post('/sign-up', async (req, res) => {
+// Auth POST
+app.post("/sign-up", async (req, res) => {
     const { name, email, password } = req.body;
     try {
         const existingUser = await User.findOne({ email });
@@ -185,40 +309,30 @@ app.post('/sign-up', async (req, res) => {
     }
 });
 
-// Login POST
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  try {
-      const user = await User.findOne({ email: username });
-      if (!user) {
-          return res.render('login', {
-              images: ['assets/images/HomePageImages/logo.png'],
-              message: 'Invalid email or password!',
-              redirect: '/login'
-          });
-      }
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const user = await User.findOne({ email: username });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.render("login", {
+                images: ['assets/images/HomePageImages/logo.png'],
+                message: "Invalid email or password!",
+                redirect: "/login"
+            });
+        }
 
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-          return res.render('login', {
-              images: ['assets/images/HomePageImages/logo.png'],
-              message: 'Invalid email or password!',
-              redirect: '/login'
-          });
-      }
-
-      res.redirect('/home?success=Login successful!');
-  } catch (err) {
-      console.error(err);
-      res.status(500).render('login', {
-          images: ['assets/images/HomePageImages/logo.png'],
-          message: 'Something went wrong. Please try again later.',
-          redirect: '/login'
-      });
-  }
+        res.redirect("/home?success=Login successful!");
+    } catch (err) {
+        console.error(err);
+        res.status(500).render("login", {
+            images: ['assets/images/HomePageImages/logo.png'],
+            message: "Something went wrong. Please try again later.",
+            redirect: "/login"
+        });
+    }
 });
 
-// Start the server
+// Start server
 app.listen(8080, () => {
     console.log("Server running at http://localhost:8080/home");
 });
