@@ -6,6 +6,16 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const app = express();
 
+
+// two 3rd party middlewares
+// logger
+const morgan = require('morgan');
+app.use(morgan('dev'));
+
+// to load web-pages faster
+const compression = require('compression');
+app.use(compression());
+
 // Models
 const User = require("./models/login");
 const Reservation = require("./models/reservation");
