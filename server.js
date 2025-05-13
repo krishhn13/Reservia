@@ -12,14 +12,14 @@ const Reservation = require("./models/reservation");
 const Review = require("./models/review");
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => {
     console.log("MongoDB connected");
-}).catch((err) => {
+  })
+  .catch((err) => {
     console.error("MongoDB connection failed:", err);
-});
+  });
+
 
 // App config
 app.set("view engine", "ejs");
